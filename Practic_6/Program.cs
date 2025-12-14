@@ -377,7 +377,7 @@ while (true)
                             Console.WriteLine("Помилка: введіть корректний індекс!");
                         }
 
-                        gpus.RemoveAt(index);
+                        RemoveGpuAt(gpus, index);
                         Gpu.DecrementCounter();
                         Console.WriteLine("Об'єкт видалено.\n");
                         break;
@@ -560,4 +560,15 @@ static void AddGpuToList(List<Gpu> list, Gpu newGpu)
 static List<Gpu> FindGpusByName(List<Gpu> list, string searchName)
 {
     return list.FindAll(vc => vc.ModelName.Contains(searchName, StringComparison.OrdinalIgnoreCase));
+}
+
+static bool RemoveGpuAt(List<Gpu> list, int index)
+{
+    if (index >= 0 && index < list.Count)
+    {
+        list.RemoveAt(index);
+        Gpu.DecrementCounter();
+        return true;
+    }
+    return false;
 }
