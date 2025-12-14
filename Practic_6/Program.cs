@@ -58,7 +58,7 @@ while (true)
                         try
                         {
                             Gpu vcard = AddGPU();
-                            gpus.Add(vcard);
+                            AddGpuToList(gpus, vcard);
                             Console.WriteLine("Відеокарта успішно додана!");
                         }
                         catch (Exception ex)
@@ -80,7 +80,7 @@ while (true)
                                 try
                                 {
                                     card = new Gpu();
-                                    gpus.Add(card);
+                                    AddGpuToList(gpus, card);
                                     Console.WriteLine("Об'єкт створено\n");
                                     Console.WriteLine(card.PrintInfo());
                                 }
@@ -100,7 +100,7 @@ while (true)
                                 try
                                 {
                                     card = new Gpu("GeForce RTX 5060 Ti", GPUArchitecture.Blackwell, 429.99m);
-                                    gpus.Add(card);
+                                    AddGpuToList(gpus, card);
                                     Console.WriteLine("Об'єкт створено\n");
                                     Console.WriteLine(card.PrintInfo());
                                 }
@@ -121,7 +121,7 @@ while (true)
                                 {
                                     var rDate = new DateTime(2025, 04, 16);
                                     card = new Gpu("GeForce RTX 5060 Ti", 2602, GPUArchitecture.Blackwell, 16, rDate, 128, 429.99m);
-                                    gpus.Add(card);
+                                    AddGpuToList(gpus, card);
                                     Console.WriteLine("Об'єкт створено\n");
                                     Console.WriteLine(card.PrintInfo());
                                 }
@@ -550,4 +550,9 @@ static Gpu AddGPU()
 
 
     return vc;
+}
+
+static void AddGpuToList(List<Gpu> list, Gpu newGpu)
+{
+    list.Add(newGpu);
 }
