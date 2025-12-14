@@ -1,12 +1,7 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
-
-namespace GpuTest
+﻿namespace GpuTest
 {
-    using Microsoft.VisualStudio.TestPlatform.ObjectModel;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using System.ComponentModel;
-    using System.Xml.Linq;
 
     [TestClass]
     public sealed class GpuTest
@@ -516,6 +511,43 @@ namespace GpuTest
             Assert.AreEqual(expected.ModelName, parsedGpu.ModelName);
             Assert.AreEqual(expected.Architecture, parsedGpu.Architecture);
             Assert.AreEqual(expected.LaunchPrice, parsedGpu.LaunchPrice);
+        }
+    }
+
+    [TestClass]
+    public sealed class ProgramTest
+    {
+        private List<Gpu> gpus;
+
+        [TestInitialize]
+        public void Setup()
+        {
+            gpus = new List<Gpu>();
+        }
+
+        [TestCleanup]
+        public void Cleanup()
+        {
+            gpus.Clear();
+        }
+
+        [TestMethod]
+        public void AddToList()
+        {
+            //Arrange
+            Gpu gpu = new Gpu("GeForce RTX 5060 Ti", GPUArchitecture.Blackwell, 429.99m);
+            List<Gpu> expected = new List<Gpu>();
+            expected.Add(gpu);
+
+            //Act
+            Program.AddGpuToList(gpus,gpu);
+
+            //Assert
+            Assert.AreEqual(expected.Count, gpus.Count);
+            for (int i = 0; i < gpus.Count; i++)
+            {
+                Assert.AreEqual(expected[i], gpus[i]);
+            }
         }
     }
 }
