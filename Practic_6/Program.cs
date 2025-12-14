@@ -1,5 +1,6 @@
 ﻿System.Console.OutputEncoding = System.Text.Encoding.Unicode;
 
+
 int maxCount = 0;
 while (true)
 {
@@ -65,6 +66,7 @@ while (true)
                         {
                             Console.WriteLine($"Помилка: {ex.Message}");
                         }
+
                         break;
 
                     //Тест конструкторів
@@ -120,7 +122,8 @@ while (true)
                                 try
                                 {
                                     var rDate = new DateTime(2025, 04, 16);
-                                    card = new Gpu("GeForce RTX 5060 Ti", 2602, GPUArchitecture.Blackwell, 16, rDate, 128, 429.99m);
+                                    card = new Gpu("GeForce RTX 5060 Ti", 2602, GPUArchitecture.Blackwell, 16,
+                                        rDate, 128, 429.99m);
                                     AddGpuToList(gpus, card);
                                     Console.WriteLine("Об'єкт створено\n");
                                     Console.WriteLine(card.PrintInfo());
@@ -142,7 +145,8 @@ while (true)
 
                     //Створення через рядок
                     case "3":
-                        Console.WriteLine("Введіть інформацію про відеокарту в форматі \"Назва;Архітектура;Ціна\":");
+                        Console.WriteLine(
+                            "Введіть інформацію про відеокарту в форматі \"Назва;Архітектура;Ціна\":");
                         string gpu = Console.ReadLine();
                         card = null;
 
@@ -154,6 +158,7 @@ while (true)
                         {
                             Console.WriteLine("Об'єкт не було додано.");
                         }
+
                         break;
 
                     //Назад
@@ -185,6 +190,7 @@ while (true)
                     Console.Write("\n");
                 }
             }
+
             break;
 
         //Знайти об'єкт
@@ -229,6 +235,7 @@ while (true)
                         {
                             Console.WriteLine("Помилка: некоректна архітектура!");
                         }
+
                         break;
 
                     //Назад
@@ -262,6 +269,7 @@ while (true)
             {
                 Console.WriteLine("Додайте об'єкти для демонстрації поведінки");
             }
+
             while (true)
             {
                 Console.WriteLine("\n==== МЕНЮ ====");
@@ -315,6 +323,7 @@ while (true)
                         {
                             Console.WriteLine(ex.Message);
                         }
+
                         break;
 
                     //Додати до кошику
@@ -344,6 +353,7 @@ while (true)
                 Console.WriteLine("Список порожній.");
                 break;
             }
+
             while (true)
             {
                 Console.WriteLine("Виберіть параметр видалення:");
@@ -371,7 +381,8 @@ while (true)
                         {
                             Console.Write("Введіть номер об'єкту для видалення: ");
 
-                            if (int.TryParse(Console.ReadLine(), out index) && index >= 0 && index < Gpu.Counter)
+                            if (int.TryParse(Console.ReadLine(), out index) && index >= 0 &&
+                                index < Gpu.Counter)
                                 break;
 
                             Console.WriteLine("Помилка: введіть корректний індекс!");
@@ -415,6 +426,7 @@ while (true)
                 Console.WriteLine("Додайте об'єкти для демонстрації поведінки");
                 break;
             }
+
             while (true)
             {
                 Console.WriteLine("\n==== МЕНЮ ====");
@@ -448,6 +460,7 @@ while (true)
                         {
                             Console.WriteLine($"Помилка: {ex.Message}");
                         }
+
                         break;
 
                     //Метод ToString
@@ -458,7 +471,8 @@ while (true)
 
                     //Метод TryParse
                     case "3":
-                        Console.WriteLine("Введіть інформацію про відеокарту в форматі \"Назва;Архітектура;Ціна\":");
+                        Console.WriteLine(
+                            "Введіть інформацію про відеокарту в форматі \"Назва;Архітектура;Ціна\":");
                         string gpu = Console.ReadLine();
                         Gpu testcase = null;
 
@@ -468,6 +482,7 @@ while (true)
                             Console.WriteLine(testcase.PrintInfo());
                             Gpu.DecrementCounter();
                         }
+
                         break;
 
 
@@ -492,89 +507,95 @@ while (true)
     }
 }
 
-static Gpu AddGPU()
+public static partial class Program
 {
-    Gpu vc = new Gpu();
-
-
-    Console.Write("Введіть назву моделі: ");
-    vc.ModelName = Console.ReadLine();
-
-
-    Console.Write("Введіть частоту GPU (1000–4000): ");
-    vc.GpuClock = int.Parse(Console.ReadLine());
-
-
-    GPUArchitecture architecture;
-    Console.WriteLine("Виберіть архітектуру: ");
-    foreach (var arch in Enum.GetValues(typeof(GPUArchitecture)))
-        Console.WriteLine($"- {arch}");
-    Console.Write("Ваш вибір: ");
-    if (Enum.TryParse<GPUArchitecture>(Console.ReadLine(), true, out architecture))
+    public static Gpu AddGPU()
     {
-        vc.Architecture = architecture;
+        Gpu vc = new Gpu();
+
+
+        Console.Write("Введіть назву моделі: ");
+        vc.ModelName = Console.ReadLine();
+
+
+        Console.Write("Введіть частоту GPU (1000–4000): ");
+        vc.GpuClock = int.Parse(Console.ReadLine());
+
+
+        GPUArchitecture architecture;
+        Console.WriteLine("Виберіть архітектуру: ");
+        foreach (var arch in Enum.GetValues(typeof(GPUArchitecture)))
+            Console.WriteLine($"- {arch}");
+        Console.Write("Ваш вибір: ");
+        if (Enum.TryParse<GPUArchitecture>(Console.ReadLine(), true, out architecture))
+        {
+            vc.Architecture = architecture;
+        }
+        else
+        {
+            throw new ArgumentException("Архітектура не коректна!");
+        }
+
+
+        Console.Write("Введіть обсяг пам'яті (1–32 ГБ): ");
+        vc.MemorySize = int.Parse(Console.ReadLine());
+
+
+        Console.Write("Введіть розрядність шини (128–2048 біт): ");
+        vc.MemoryBusWidth = short.Parse(Console.ReadLine());
+
+
+        DateTime releaseDate;
+        Console.Write("Введіть дату випуску: ");
+        if (DateTime.TryParse(Console.ReadLine(), out releaseDate))
+        {
+            vc.ReleaseDate = releaseDate;
+        }
+        else
+        {
+            throw new ArgumentException("Дата не коректна!");
+        }
+
+
+        Console.Write("Введіть ціну на релізі (>0$): ");
+        vc.LaunchPrice = decimal.Parse(Console.ReadLine());
+
+
+        return vc;
     }
-    else
+
+    public static void AddGpuToList(List<Gpu> list, Gpu newGpu)
     {
-        throw new ArgumentException("Архітектура не коректна!");
+        list.Add(newGpu);
     }
 
-
-    Console.Write("Введіть обсяг пам'яті (1–32 ГБ): ");
-    vc.MemorySize = int.Parse(Console.ReadLine());
-
-
-    Console.Write("Введіть розрядність шини (128–2048 біт): ");
-    vc.MemoryBusWidth = short.Parse(Console.ReadLine());
-
-
-    DateTime releaseDate;
-    Console.Write("Введіть дату випуску: ");
-    if (DateTime.TryParse(Console.ReadLine(), out releaseDate))
+    public static List<Gpu> FindGpusByName(List<Gpu> list, string searchName)
     {
-        vc.ReleaseDate = releaseDate;
+        return list.FindAll(vc => vc.ModelName.Contains(searchName, StringComparison.OrdinalIgnoreCase));
     }
-    else
+
+    public static bool RemoveGpuAt(List<Gpu> list, int index)
     {
-        throw new ArgumentException("Дата не коректна!");
+        if (index >= 0 && index < list.Count)
+        {
+            list.RemoveAt(index);
+            Gpu.DecrementCounter();
+            return true;
+        }
+
+        return false;
     }
 
-
-    Console.Write("Введіть ціну на релізі (>0$): ");
-    vc.LaunchPrice = decimal.Parse(Console.ReadLine());
-
-
-    return vc;
-}
-
-static void AddGpuToList(List<Gpu> list, Gpu newGpu)
-{
-    list.Add(newGpu);
-}
-
-static List<Gpu> FindGpusByName(List<Gpu> list, string searchName)
-{
-    return list.FindAll(vc => vc.ModelName.Contains(searchName, StringComparison.OrdinalIgnoreCase));
-}
-
-static bool RemoveGpuAt(List<Gpu> list, int index)
-{
-    if (index >= 0 && index < list.Count)
+    public static int RemoveGpusByName(List<Gpu> list, string modelName)
     {
-        list.RemoveAt(index);
-        Gpu.DecrementCounter();
-        return true;
-    }
-    return false;
-}
+        int removedCount = list.RemoveAll(vc => vc.ModelName.Equals(modelName, StringComparison.OrdinalIgnoreCase));
 
-static int RemoveGpusByName(List<Gpu> list, string modelName)
-{
-    int removedCount = list.RemoveAll(vc => vc.ModelName.Equals(modelName, StringComparison.OrdinalIgnoreCase));
+        for (int i = 0; i < removedCount; i++)
+        {
+            Gpu.DecrementCounter();
+        }
 
-    for (int i = 0; i < removedCount; i++)
-    {
-        Gpu.DecrementCounter();
+        return removedCount;
     }
-    return removedCount;
+
 }
