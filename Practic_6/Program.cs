@@ -393,12 +393,7 @@ while (true)
                         Console.Write("Введіть назву моделі для видалення:");
                         string deleteName = Console.ReadLine();
 
-                        var removed = gpus.RemoveAll(vc => vc.ModelName.Equals(deleteName, StringComparison.OrdinalIgnoreCase));
-
-                        for (int i = 0; i < removed; i++)
-                        {
-                            Gpu.DecrementCounter();
-                        }
+                        var removed = RemoveGpusByName(gpus, deleteName);
 
                         Console.WriteLine(removed > 0 ? "Об'єкт видалено.\n" : "Об'єкт не знайдено.\n");
                         break;
@@ -571,4 +566,15 @@ static bool RemoveGpuAt(List<Gpu> list, int index)
         return true;
     }
     return false;
+}
+
+static int RemoveGpusByName(List<Gpu> list, string modelName)
+{
+    int removedCount = list.RemoveAll(vc => vc.ModelName.Equals(modelName, StringComparison.OrdinalIgnoreCase));
+
+    for (int i = 0; i < removedCount; i++)
+    {
+        Gpu.DecrementCounter();
+    }
+    return removedCount;
 }
