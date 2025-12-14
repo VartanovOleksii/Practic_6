@@ -208,7 +208,7 @@ while (true)
                     case "1":
                         Console.Write("Введіть назву моделі: ");
                         string searchName = Console.ReadLine();
-                        findresults = gpus.FindAll(vc => vc.ModelName.Contains(searchName, StringComparison.OrdinalIgnoreCase));
+                        findresults = FindGpusByName(gpus, searchName);
                         break;
 
 
@@ -555,4 +555,9 @@ static Gpu AddGPU()
 static void AddGpuToList(List<Gpu> list, Gpu newGpu)
 {
     list.Add(newGpu);
+}
+
+static List<Gpu> FindGpusByName(List<Gpu> list, string searchName)
+{
+    return list.FindAll(vc => vc.ModelName.Contains(searchName, StringComparison.OrdinalIgnoreCase));
 }
