@@ -201,7 +201,13 @@ public class Gpu
     {
         return price * (1 - Discount);
     }
-
+    public static void DecrementCounter()
+    {
+        if (_counter > 0)
+        {
+            _counter--;
+        }
+    }
 
     //Статичний конструктор
     static Gpu()

@@ -11,7 +11,7 @@ while (true)
     Console.WriteLine("Помилка: введіть додатне число!");
 }
 
-List<Gpu> gpus = new List<Gpu>(maxCount);
+List<Gpu> gpus = new List<Gpu>();
 
 start_of_loop:
 while (true)
@@ -361,27 +361,46 @@ while (true)
                     case "1":
                         int index;
 
+                        Console.WriteLine("Поточний список відеокарт (Індекс - Назва):");
+                        for (int i = 0; i < Gpu.Counter; i++)
+                        {
+                            Console.WriteLine($"[{i}] - {gpus[i].ModelName}");
+                        }
+
                         while (true)
                         {
                             Console.Write("Введіть номер об'єкту для видалення: ");
 
-                            if (int.TryParse(Console.ReadLine(), out index) && index >= 0 && index < gpus.Count())
+                            if (int.TryParse(Console.ReadLine(), out index) && index >= 0 && index < Gpu.Counter)
                                 break;
 
                             Console.WriteLine("Помилка: введіть корректний індекс!");
                         }
 
                         gpus.RemoveAt(index);
-                        Console.WriteLine("Об'єкт видалено.");
+                        Gpu.DecrementCounter();
+                        Console.WriteLine("Об'єкт видалено.\n");
                         break;
 
                     //Видалення за назвою
                     case "2":
+                        Console.WriteLine("Поточний список відеокарт (Назва):");
+                        for (int i = 0; i < Gpu.Counter; i++)
+                        {
+                            Console.WriteLine($"{gpus[i].ModelName}");
+                        }
+
                         Console.Write("Введіть назву моделі для видалення:");
                         string deleteName = Console.ReadLine();
 
                         var removed = gpus.RemoveAll(vc => vc.ModelName.Equals(deleteName, StringComparison.OrdinalIgnoreCase));
-                        Console.WriteLine(removed > 0 ? "Об'єкт видалено." : "Об'єкт не знайдено.");
+
+                        for (int i = 0; i < removed; i++)
+                        {
+                            Gpu.DecrementCounter();
+                        }
+
+                        Console.WriteLine(removed > 0 ? "Об'єкт видалено.\n" : "Об'єкт не знайдено.\n");
                         break;
 
                     //Назад
@@ -452,7 +471,7 @@ while (true)
                         {
                             Console.WriteLine("Результат:");
                             Console.WriteLine(testcase.PrintInfo());
-                            maxCount++;
+                            Gpu.DecrementCounter();
                         }
                         break;
 
