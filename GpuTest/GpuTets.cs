@@ -532,7 +532,7 @@
         }
 
         [TestMethod]
-        public void AddToList()
+        public void AddGpuToList()
         {
             //Arrange
             Gpu gpu = new Gpu("GeForce RTX 5060 Ti", GPUArchitecture.Blackwell, 429.99m);
@@ -543,10 +543,76 @@
             Program.AddGpuToList(gpus,gpu);
 
             //Assert
-            Assert.AreEqual(expected.Count, gpus.Count);
+            Assert.HasCount(expected.Count, gpus);
             for (int i = 0; i < gpus.Count; i++)
             {
                 Assert.AreEqual(expected[i], gpus[i]);
+            }
+        }
+
+        [TestMethod]
+        public void FindGpusByName_zero_results()
+        {
+            //Arrange
+            Gpu gpu1 = new Gpu("GeForce RTX 5060 Ti", GPUArchitecture.Blackwell, 429.99m);
+            Gpu gpu2 = new Gpu("Radeon RX 9060 XT", GPUArchitecture.Navi3X, 379.99m);
+            List<Gpu> expected = new List<Gpu>();
+            gpus.Add(gpu1);
+            gpus.Add(gpu2);
+
+            //Act
+            List<Gpu> actual = Program.FindGpusByName(gpus, "GeForce RTX 5070");
+
+            //Assert
+            Assert.HasCount(expected.Count, actual);
+        }
+
+        [TestMethod]
+        public void FindGpusByName_one_result()
+        {
+            //Arrange
+            Gpu gpu1 = new Gpu("GeForce RTX 5060 Ti", GPUArchitecture.Blackwell, 429.99m);
+            Gpu gpu2 = new Gpu("Radeon RX 9060 XT", GPUArchitecture.Navi3X, 379.99m);
+            List<Gpu> expected = new List<Gpu>();
+            expected.Add(gpu1);
+            gpus.Add(gpu1);
+            gpus.Add(gpu2);
+
+            //Act
+            List<Gpu> actual = Program.FindGpusByName(gpus, "GeForce RTX 5060 Ti");
+
+            //Assert
+            Assert.HasCount(expected.Count, actual);
+
+            for (int i = 0; i < actual.Count; i++)
+            {
+                Assert.AreEqual(expected[i], actual[i]);
+            }
+        }
+
+        [TestMethod]
+        public void FindGpusByName_more_than_one_result()
+        {
+            //Arrange
+            Gpu gpu1 = new Gpu("GeForce RTX 5060 Ti", GPUArchitecture.Blackwell, 429.99m);
+            Gpu gpu2 = new Gpu("Radeon RX 9060 XT", GPUArchitecture.Navi3X, 379.99m);
+            Gpu gpu3 = new Gpu("Radeon RX 9060 XT", GPUArchitecture.Navi3X, 279.99m);
+            List<Gpu> expected = new List<Gpu>();
+            expected.Add(gpu2);
+            expected.Add(gpu3);
+            gpus.Add(gpu1);
+            gpus.Add(gpu2);
+            gpus.Add(gpu3);
+
+            //Act
+            List<Gpu> actual = Program.FindGpusByName(gpus, "Radeon RX 9060 XT");
+
+            //Assert
+            Assert.HasCount(expected.Count, actual);
+
+            for (int i = 0; i < actual.Count; i++)
+            {
+                Assert.AreEqual(expected[i], actual[i]);
             }
         }
     }
