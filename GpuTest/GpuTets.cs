@@ -615,5 +615,49 @@
                 Assert.AreEqual(expected[i], actual[i]);
             }
         }
+
+        [TestMethod]
+        public void RemoveGpuAt_invalid_index()
+        {
+            //Arrange
+            Gpu gpu = new Gpu("GeForce RTX 5060 Ti", GPUArchitecture.Blackwell, 429.99m);
+            gpus.Add(gpu);
+            List<Gpu> expected = new List<Gpu>();
+            expected.Add(gpu);
+
+            //Act
+            bool actual = Program.RemoveGpuAt(gpus, 1);
+
+            //Assert
+            Assert.IsFalse(actual);
+            Assert.HasCount(expected.Count, gpus);
+            for (int i = 0; i < gpus.Count; i++)
+            {
+                Assert.AreEqual(expected[i], gpus[i]);
+            }
+        }
+
+        [TestMethod]
+        public void RemoveGpuAt_valid_index()
+        {
+            //Arrange
+            Gpu gpu1 = new Gpu("GeForce RTX 5060 Ti", GPUArchitecture.Blackwell, 429.99m);
+            Gpu gpu2 = new Gpu("Radeon RX 9060 XT", GPUArchitecture.Navi3X, 379.99m);
+            gpus.Add(gpu1);
+            gpus.Add(gpu2);
+            List<Gpu> expected = new List<Gpu>();
+            expected.Add(gpu2);
+
+            //Act
+            bool actual = Program.RemoveGpuAt(gpus, 0);
+
+            //Assert
+            Assert.IsTrue(actual);
+            Assert.HasCount(expected.Count, gpus);
+            for (int i = 0; i < gpus.Count; i++)
+            {
+                Assert.AreEqual(expected[i], gpus[i]);
+            }
+        }
     }
 }
